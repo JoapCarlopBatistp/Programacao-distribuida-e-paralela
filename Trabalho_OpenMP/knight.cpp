@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iomanip>
 #include <vector>
+#include <chrono>
 
 using namespace std;
 
@@ -33,8 +34,13 @@ public:
     board[sx][sy] = 0;
 
     // Solve the problem
+    auto start = chrono::high_resolution_clock::now();
     if(!findtour(*this, 0))
       cout << "No solutions found\n";
+    auto end = chrono::high_resolution_clock::now();
+
+    cout << "Tempo total: " 
+         << chrono::duration<double>(end - start).count() << "s\n";
   }
 
   // Copy constructor
@@ -104,7 +110,10 @@ int main(void) {
 
   cin >> table_size >> start_x >> start_y;
 
+  auto start = chrono::high_resolution_clock::now();
   tour T(table_size, start_x, start_y);
+  auto end = chrono::high_resolution_clock::now();
+  cout << "Tempo total: " << chrono::duration<double>(end - start).count() << "\n";
   return 0;
 }
 

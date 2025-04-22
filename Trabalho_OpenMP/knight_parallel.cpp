@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <vector>
 #include <omp.h>
+#include <chrono>
 
 using namespace std;
 
@@ -34,8 +35,13 @@ public:
     board[sx][sy] = 0;
 
     // Solve the problem
+    auto start = chrono::high_resolution_clock::now();
     if(!findtour(*this, 0))
       cout << "No solutions found\n";
+    auto end = chrono::high_resolution_clock::now();
+
+    cout << "Tempo total: " 
+         << chrono::duration<double>(end - start).count() << "s\n";
   }
 
   // Copy constructor
@@ -78,7 +84,6 @@ bool tour::findtour(tour& T, int imove) {
   int cs = T.size;
 
   bool found_solution = false;
-
   #pragma omp parallel for shared(found_solution)
   for (int i = 0; i < 8; ++i) {
     if(found_solution) continue;
@@ -107,16 +112,18 @@ bool tour::findtour(tour& T, int imove) {
       }
     }
   }
-
   return found_solution;
 }
 
 int main(void) {
   int table_size, start_x, start_y;
-  omp_set_num_threads(8);
+  omp_set_num_threads(8); //muda o número de threads, se quiser pode usar direto na compilação
   cin >> table_size >> start_x >> start_y;
 
+  auto start = chrono::high_resolution_clock::now();
   tour T(table_size, start_x, start_y);
+  auto end = chrono::high_resolution_clock::now();
+  cout << "Tempo total: " << chrono::duration<double>(end - start).count() << "\n";
   return 0;
 }
 
