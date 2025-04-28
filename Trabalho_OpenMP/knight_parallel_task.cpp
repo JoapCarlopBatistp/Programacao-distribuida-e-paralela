@@ -14,7 +14,7 @@ const int knight_move[8][2] = {
   {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}
 };
 
-#define TASK_DEPTH 3
+#define TASK_DEPTH 8
 
 // Flag global para indicar se uma solução já foi encontrada
 std::atomic<bool> solution_found(false);
